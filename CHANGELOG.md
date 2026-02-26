@@ -3,6 +3,7 @@
 ## 2026-02-26
 
 ### Added
+- **Git identity:** Bind-mounts the host's `~/.gitconfig` into the container so git commits use your name and email
 - **Git support:** Pre-configured `safe.directory` so git works inside the container; enabled git status in the zsh prompt
 - **Git worktrees:** `make dc.worktree.new/list/remove` targets and `wt` shell function for switching between worktrees
 - **Parallel Claude workflow:** Run multiple Claude instances in separate worktrees via multiple `make dc.shell` sessions
