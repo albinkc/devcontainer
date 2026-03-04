@@ -44,13 +44,13 @@ dc.down:
 	docker rm -f $$(docker ps -aqf "label=devcontainer.local_folder=$(CURDIR)")
 
 dc.shell:
-	devcontainer exec --workspace-folder . zsh
+	exec devcontainer exec --workspace-folder . zsh
 
 dc.claude:
-	claude --dangerously-skip-permissions
+	exec claude --dangerously-skip-permissions
 
 dc.tidewave:
-	tidewave --allow-remote-access --allowed-origins http://localhost:9833
+	exec tidewave --allow-remote-access --allowed-origins http://localhost:9833
 
 dc.tidewave.bg:
 	@$(MAKE) dc.tidewave > /tmp/tidewave.log 2>&1 & echo "Tidewave started (pid $$!). Logs: /tmp/tidewave.log"
@@ -59,13 +59,13 @@ dc.tidewave.stop:
 	@pkill -f tidewave && echo "Tidewave stopped" || echo "Tidewave is not running"
 
 dc.logs.proxy:
-	tail -f /var/log/squid/access.log
+	exec tail -f /var/log/squid/access.log
 
 dc.logs.tidewave:
-	tail -f /tmp/tidewave.log
+	exec tail -f /tmp/tidewave.log
 
 dc.server:
-	iex -S mix phx.server
+	exec iex -S mix phx.server
 
 dc.test:
 	MIX_ENV=test mix test

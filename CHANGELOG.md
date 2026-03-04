@@ -1,5 +1,10 @@
 # Changelog
 
+## 2026-03-04
+
+### Fixed
+- **Signal handling in Makefile:** Added `exec` to all interactive/long-running targets (`dc.server`, `dc.shell`, `dc.claude`, `dc.tidewave`, `dc.logs.*`) to prevent orphaned processes on CTRL+C
+
 ## 2026-03-02
 
 ### Fixed
