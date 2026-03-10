@@ -44,6 +44,7 @@ dc.rebuild:
 dc.down:
 	@id=$$(docker ps -aqf "label=devcontainer.local_folder=$(CURDIR)"); \
 	if [ -n "$$id" ]; then docker rm -f $$id; else echo "No devcontainer to remove"; fi
+	@docker volume rm -f $$(basename $(CURDIR))-node-modules 2>/dev/null || true
 
 dc.shell:
 	exec devcontainer exec --workspace-folder . zsh

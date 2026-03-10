@@ -31,6 +31,9 @@
   "mounts": [
     "source=${localWorkspaceFolder}/.claude,target=/home/dev/.claude,type=bind,consistency=cached",
     "source=${localEnv:HOME}/.gitconfig,target=/home/dev/.gitconfig,type=bind,consistency=cached",
+    // Keep node_modules inside the container to avoid syncing platform-specific
+    // binaries to the host and to improve install/build performance.
+    "source=${localWorkspaceFolderBasename}-node-modules,target=/workspace/assets/node_modules,type=volume",
   ],
   "workspaceMount": "source=${localWorkspaceFolder},target=/workspace,type=bind,consistency=delegated",
   "workspaceFolder": "/workspace",

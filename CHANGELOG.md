@@ -1,5 +1,10 @@
 # Changelog
 
+## 2026-03-10
+
+### Added
+- **Isolated `node_modules`:** `assets/node_modules` is now stored in a per-project Docker volume (`<project>-node-modules`) instead of being shared with the host, avoiding platform mismatches and improving install/build performance. The volume is cleaned up automatically on `make dc.down`
+
 ## 2026-03-04
 
 ### Fixed
