@@ -10,6 +10,9 @@
 
 set -euo pipefail
 
+# --- Fix ownership of Docker volume mounts (created as root by default) ---
+[ -d /workspace/assets/node_modules ] && chown dev:dev /workspace/assets/node_modules
+
 # --- Protect sensitive files ---
 shadow_path() {
     [ -e "$1" ] || return 0
