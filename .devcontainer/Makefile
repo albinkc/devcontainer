@@ -1,4 +1,4 @@
-.PHONY: list dc.up dc.stop dc.rebuild dc.down dc.shell dc.claude dc.tidewave dc.tidewave.bg dc.tidewave.stop dc.logs.proxy dc.server dc.test dc.worktree.new dc.worktree.list dc.worktree.remove
+.PHONY: list dc.up dc.status dc.stop dc.rebuild dc.down dc.shell dc.claude dc.tidewave dc.tidewave.bg dc.tidewave.stop dc.logs.proxy dc.server dc.test dc.worktree.new dc.worktree.list dc.worktree.remove
 
 list:
 	@printf "  %-22s  %s\n" \
@@ -6,6 +6,7 @@ list:
 		"" "" \
 		"# Commands to run inside your project" "" \
 		"make dc.up"             "Start the devcontainer" \
+		"make dc.status"         "Show whether the devcontainer is running" \
 		"make dc.stop"           "Stop the devcontainer (keeps container)" \
 		"make dc.rebuild"        "Rebuild and start the devcontainer" \
 		"make dc.down"           "Stop and remove the devcontainer" \
@@ -33,6 +34,11 @@ list:
 dc.up:
 	devcontainer up --workspace-folder .
 
+dc.status:
+	@id=$$(docker ps -qf "label=devcontainer.local_folder=$(CURDIR)"); \
+	if [ -n "$$id" ]; then echo "Devcontainer is running ($$id)"; \
+	else echo "Devcontainer is not running"; fi
+
 dc.stop:
 	@id=$$(docker ps -aqf "label=devcontainer.local_folder=$(CURDIR)"); \
 	if [ -n "$$id" ]; then docker stop $$id; else echo "No devcontainer running"; fi
@@ -43,8 +49,11 @@ dc.rebuild:
 
 dc.down:
 	@id=$$(docker ps -aqf "label=devcontainer.local_folder=$(CURDIR)"); \
-	if [ -n "$$id" ]; then docker rm -f $$id; else echo "No devcontainer to remove"; fi
-	@docker volume rm -f $$(basename $(CURDIR))-node-modules 2>/dev/null || true
+	if [ -n "$$id" ]; then docker rm -f $$id >/dev/null && echo "Devcontainer removed: $$id"; else echo "No devcontainer to remove"; fi
+	@vol=$$(basename $(CURDIR))-node-modules; \
+	if docker volume inspect $$vol >/dev/null 2>&1; then \
+		docker volume rm $$vol >/dev/null && echo "Volume removed: $$vol"; \
+	else echo "No volume to remove"; fi
 
 dc.shell:
 	exec devcontainer exec --workspace-folder . zsh

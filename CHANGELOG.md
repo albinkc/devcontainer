@@ -1,5 +1,13 @@
 # Changelog
 
+## 2026-03-12
+
+### Added
+- **Status command:** `make dc.status` shows whether the devcontainer is running
+
+### Improved
+- **Better `dc.down` output:** Prints `Devcontainer removed: <id>` and `Volume removed: <name>` (or corresponding "nothing to remove" messages) instead of raw Docker output
+
 ## 2026-03-10
 
 ### Added
