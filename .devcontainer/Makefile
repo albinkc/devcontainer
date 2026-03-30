@@ -1,5 +1,9 @@
 .PHONY: list dc.up dc.status dc.stop dc.rebuild dc.down dc.shell dc.claude dc.tidewave dc.tidewave.bg dc.tidewave.stop dc.logs.proxy dc.server dc.test dc.worktree.new dc.worktree.list dc.worktree.remove
 
+define require_devcontainer
+	@if [ "$$DEVCONTAINER" != "true" ]; then echo "Error: This command must be run inside the devcontainer." >&2; exit 1; fi
+endef
+
 list:
 	@printf "  %-22s  %s\n" \
 		"make list"              "List all available commmands (you ran this)" \
@@ -59,33 +63,41 @@ dc.shell:
 	exec devcontainer exec --workspace-folder . zsh
 
 dc.claude:
+	$(require_devcontainer)
 	exec claude --dangerously-skip-permissions
 
 dc.tidewave:
+	$(require_devcontainer)
 	exec tidewave --allow-remote-access --allowed-origins http://localhost:9833
 
 dc.tidewave.bg:
 	@$(MAKE) dc.tidewave > /tmp/tidewave.log 2>&1 & echo "Tidewave started (pid $$!). Logs: /tmp/tidewave.log"
 
 dc.tidewave.stop:
+	$(require_devcontainer)
 	@pkill -f tidewave && echo "Tidewave stopped" || echo "Tidewave is not running"
 
 dc.logs.proxy:
+	$(require_devcontainer)
 	exec tail -f /var/log/squid/access.log
 
 dc.logs.tidewave:
+	$(require_devcontainer)
 	exec tail -f /tmp/tidewave.log
 
 dc.server:
+	$(require_devcontainer)
 	exec iex -S mix phx.server
 
 dc.test:
+	$(require_devcontainer)
 	MIX_ENV=test mix test
 
 # --- Worktree commands ---
 # Usage: make dc.worktree.new <name> [base-branch]
 # The extra args are consumed via MAKECMDGOALS so make doesn't treat them as targets.
 dc.worktree.new:
+	$(require_devcontainer)
 	$(eval WT_NAME := $(word 2,$(MAKECMDGOALS)))
 	$(eval WT_BASE := $(word 3,$(MAKECMDGOALS)))
 	@if [ -z "$(WT_NAME)" ]; then echo "Usage: make dc.worktree.new <name> [base-branch]"; exit 1; fi
@@ -96,10 +108,12 @@ dc.worktree.new:
 	fi
 
 dc.worktree.list:
+	$(require_devcontainer)
 	@git worktree list
 
 # Usage: make dc.worktree.remove <name>
 dc.worktree.remove:
+	$(require_devcontainer)
 	$(eval WT_NAME := $(word 2,$(MAKECMDGOALS)))
 	@if [ -z "$(WT_NAME)" ]; then echo "Usage: make dc.worktree.remove <name>"; exit 1; fi
 	git worktree remove .worktrees/$(WT_NAME)

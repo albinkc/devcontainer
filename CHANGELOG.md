@@ -1,5 +1,10 @@
 # Changelog
 
+## 2026-03-30
+
+### Added
+- **Devcontainer guard:** All Makefile targets that should only run inside the container now check the `DEVCONTAINER` env var and exit with a clear error message if run on the host
+
 ## 2026-03-12
 
 ### Added
