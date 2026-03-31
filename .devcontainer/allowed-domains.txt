@@ -12,6 +12,10 @@ google.com
 # Zed
 .zed.dev
 
+# ACP (for claude and other agents in zed)
+cdn.agentclientprotocol.com
+nodejs.org
+
 # Anthropic (Claude)
 .anthropic.com
 .claude.com
@@ -35,5 +39,3 @@ storage.googleapis.com
 # VS Code
 .visualstudio.com
 .vscode.blob.core.windows.net
-
-
