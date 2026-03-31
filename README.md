@@ -14,7 +14,7 @@ strict network firewall
 
 1. Copy the `.devcontainer/` directory into your Elixir project root with:
 ```bash
-curl -sL https://github.com/PJUllrich/devcontainer/archive/refs/heads/main.tar.gz \
+curl -sL https://github.com/albinkc/devcontainer/archive/refs/heads/main.tar.gz \
   | tar xz --strip-components=1 devcontainer-main/.devcontainer
 ```
 2. Create a root `Makefile` that includes the devcontainer Makefile with: 
