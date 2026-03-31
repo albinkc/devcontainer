@@ -1,5 +1,5 @@
 {
-  "name": "KSC Dev",
+  "name": "Elixir Dev",
   "build": {
     "dockerfile": "Dockerfile",
     "args": {
