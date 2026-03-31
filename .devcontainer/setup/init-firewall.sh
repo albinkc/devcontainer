@@ -51,6 +51,12 @@ fi
 # regex patterns:
 #   .github.com  -> (^|\.)github\.com$   (domain + subdomains)
 #   google.com   -> ^google\.com$         (exact match only)
+if [ -f "/workspace/.devcontainer/allowed-domains.txt" ]; then
+    cp /workspace/.devcontainer/allowed-domains.txt /etc/squid/allowed-domains.txt
+    echo "Loaded allowlist from workspace copy"
+fi
+
+ALLOWED_DOMAINS="/etc/squid/allowed-domains.txt"
 SSL_REGEX="/etc/squid/allowed-ssl-domains.regex"
 > "$SSL_REGEX"
 while IFS= read -r line; do
@@ -66,7 +72,7 @@ while IFS= read -r line; do
         escaped="${line//./\\.}"
         echo "^${escaped}$" >> "$SSL_REGEX"
     fi
-done < /etc/squid/allowed-domains.txt
+done < "$ALLOWED_DOMAINS"
 echo "Generated $(wc -l < "$SSL_REGEX") SSL regex rules"
 
 # --- Start Squid ---
